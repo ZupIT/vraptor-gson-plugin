@@ -41,6 +41,7 @@ public class GsonJSONSerializer implements SerializerBuilder {
 	public void serialize() {
 		try {
 			getWriter().write(convertUsingGson(root));
+			getWriter().flush();
 		} catch (IOException e) {
 			throw new ResultException("Unable to serialize data width Gson API", e);
 		}
