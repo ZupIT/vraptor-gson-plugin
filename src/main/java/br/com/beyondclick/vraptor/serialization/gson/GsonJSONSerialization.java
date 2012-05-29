@@ -7,7 +7,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
-import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.serialization.JSONSerialization;
 import br.com.caelum.vraptor.serialization.NoRootSerialization;
 import br.com.caelum.vraptor.serialization.Serializer;
@@ -31,7 +30,7 @@ import com.google.gson.JsonSerializer;
  * @since 3.3.2
  *
  */
-@Component
+
 public class GsonJSONSerialization implements JSONSerialization {
 
 	private final HttpServletResponse response;
