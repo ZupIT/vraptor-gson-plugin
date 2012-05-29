@@ -2,8 +2,6 @@ package br.com.beyondclick.vraptor.serialization.gson;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Type;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,13 +10,6 @@ import br.com.caelum.vraptor.serialization.NoRootSerialization;
 import br.com.caelum.vraptor.serialization.Serializer;
 import br.com.caelum.vraptor.serialization.SerializerBuilder;
 import br.com.caelum.vraptor.view.ResultException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 /**
  * Gson implementation for JSONSerialization
@@ -56,37 +47,14 @@ public class GsonJSONSerialization implements JSONSerialization {
 	}
 
 	public SerializerBuilder getSerializer(Writer writer) {
-            return new GsonJSONSerializer(getGson(), writer);
+            return new GsonJSONSerializer(writer, indented);
     }
-
-	private GsonBuilder gsonBuilder;
-	protected Gson getGson() {
-		gsonBuilder = new GsonBuilder();
-		gsonBuilder.serializeNulls();
-		gsonBuilder.registerTypeAdapter(Date.class, new DateSerializer());
-		gsonBuilder.registerTypeAdapter(java.sql.Date.class, new SqlDateSerializer());
-		if( indented ) gsonBuilder.setPrettyPrinting();
-		return gsonBuilder.create();
-	}
-	
-	private class DateSerializer implements JsonSerializer<Date> {
-	  public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-	    return new JsonPrimitive(src.toString());
-	  }
-	}
-
-	private class SqlDateSerializer implements JsonSerializer<java.sql.Date> {
-		public JsonElement serialize(java.sql.Date src, Type typeOfSrc, JsonSerializationContext context) {
-			return new JsonPrimitive(new Date(src.getTime()).toString());
-		}
-	}
-	
 
 	public <T> NoRootSerialization withoutRoot() {
 		return this;
 	}
 
-	private boolean indented = false;
+	protected boolean indented = false;
 	public JSONSerialization indented() {
 		indented = true;
 		return this;

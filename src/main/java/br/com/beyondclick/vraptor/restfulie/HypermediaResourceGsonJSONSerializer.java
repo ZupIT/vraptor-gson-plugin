@@ -11,15 +11,13 @@ import br.com.caelum.vraptor.restfulie.hypermedia.HypermediaResource;
 import br.com.caelum.vraptor.restfulie.relation.Relation;
 import br.com.caelum.vraptor.restfulie.relation.RelationBuilder;
 
-import com.google.gson.Gson;
-
 public class HypermediaResourceGsonJSONSerializer extends GsonJSONSerializer {
 	
 	private final Restfulie restfulie;
 	private final Configuration config;
 
-	public HypermediaResourceGsonJSONSerializer(Gson gson, Writer writer, Restfulie restfulie, Configuration config) {
-		super(gson, writer);
+	public HypermediaResourceGsonJSONSerializer(Writer writer, Restfulie restfulie, Configuration config, boolean indented) {
+		super(writer, indented);
 		this.restfulie = restfulie;
 		this.config = config;
 	}

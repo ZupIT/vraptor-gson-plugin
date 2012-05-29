@@ -45,8 +45,6 @@ import br.com.caelum.vraptor.restfulie.hypermedia.HypermediaResource;
 import br.com.caelum.vraptor.restfulie.relation.Relation;
 import br.com.caelum.vraptor.restfulie.relation.RelationBuilder;
 
-import com.google.gson.Gson;
-
 /**
  * Ensure that JSON serialization, of Restful resources, contains resources links. And not restful resources remains untouched.
  * 
@@ -78,7 +76,7 @@ public class HipermediaResourceGsonJSONSerializerTest {
 
 		stream = new ByteArrayOutputStream();
 		writer = new PrintWriter(stream, true);
-		gson = new HypermediaResourceGsonJSONSerializer(new Gson(), writer, restfulie, config);
+		gson = new HypermediaResourceGsonJSONSerializer(writer, restfulie, config, false);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1982, 7, 28, 0, 0, 0);

@@ -19,10 +19,6 @@ public class GsonRestfulSerializationJSON extends GsonJSONSerialization {
 	private final Restfulie restfulie;
 	private final Configuration config;
 
-	/*
-	 * FIXME: A necessidade de um objeto Restfulie, usado para serializar os links dos HypermediaResources, 
-	 * está impedindo que esta classe seja instânciada.
-	*/
 	public GsonRestfulSerializationJSON(HttpServletResponse response, Restfulie restfulie, Configuration config) {
 		super(response);
 		this.restfulie = restfulie;
@@ -30,6 +26,6 @@ public class GsonRestfulSerializationJSON extends GsonJSONSerialization {
 	}
 
 	public SerializerBuilder getSerializer(Writer writer) {
-        return new HypermediaResourceGsonJSONSerializer(getGson(), writer, restfulie, config);
+        return new HypermediaResourceGsonJSONSerializer(writer, restfulie, config, indented);
     }
 }

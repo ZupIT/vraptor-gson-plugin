@@ -2,6 +2,7 @@ package br.com.beyondclick.vraptor.serialization.gson;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,6 +73,19 @@ public class GsonJSONSerializationTest {
 		
 		JSONObject jsonOrder = new JSONObject(result);
 		assertNotSame(JSONObject.NULL, jsonOrder);
+	}
+	
+	@Test
+	public void shouldExcludeFields() throws Exception {
+		Order order = new Order(new Client("guilherme silveira"), 15.0, "pack it nicely, please", defaultTestDate);
+		serialization.from(order).exclude("comments", "address").serialize();
+		
+		JSONObject jsonOrder = new JSONObject(result());
+		assertNotSame(JSONObject.NULL, jsonOrder);
+		try{
+			jsonOrder.get("comments");
+			fail("should have excluded the comments");
+		}catch (JSONException e) {}
 	}
 	
 	
