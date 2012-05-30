@@ -45,26 +45,8 @@ public class GsonJSONSerializationTest {
 	}
 
 	@Test
-	public void shouldSerializeAllNullFields() throws Exception {
-		Order order = new Order(new Client("guilherme silveira"), 15.0, null, defaultTestDate);
-		serialization.from(order).serialize();
-
-		JSONObject jsonOrder = new JSONObject(result());
-		assertEquals(15.0, jsonOrder.getDouble("price"), 0);
-		assertEquals(JSONObject.NULL, jsonOrder.get("comments"));
-		assertEquals("Sat Aug 28 00:00:00 BRT 1982", jsonOrder.get("date"));
-		
-		JSONObject jsonClient = jsonOrder.getJSONObject("client");
-		assertEquals("guilherme silveira", jsonClient.get("name"));
-		assertEquals(JSONObject.NULL, jsonClient.get("address"));
-		
-		JSONArray jsonItems = jsonOrder.getJSONArray("items");
-		assertEquals(0, jsonItems.length());
-	}
-
-	@Test
 	public void shouldSerializeAllBasicFieldsIdented() throws Exception {
-		String expectedResult = "{\n  \"client\": {\n    \"name\": \"guilherme silveira\",\n    \"address\": null\n  },\n  \"price\": 15.0,\n  \"comments\": \"pack it nicely, please\",\n  \"date\": \"Sat Aug 28 00:00:00 BRT 1982\",\n  \"items\": []\n}";
+		String expectedResult = "{\n  \"client\": {\n    \"name\": \"guilherme silveira\"\n  },\n  \"price\": 15.0,\n  \"comments\": \"pack it nicely, please\",\n  \"date\": \"Sat Aug 28 00:00:00 BRT 1982\",\n  \"items\": []\n}";
 		Order order = new Order(new Client("guilherme silveira"), 15.0, "pack it nicely, please", defaultTestDate);
 		serialization.indented().from(order).serialize();
 
@@ -110,7 +92,7 @@ public class GsonJSONSerializationTest {
 
 	@Test
 	public void shouldSerializeCollection() throws Exception {
-		String expectedResult = "{\"client\":{\"name\":\"guilherme silveira\",\"address\":null},\"price\":15.0,\"comments\":\"pack it nicely, please\",\"date\":\"Sat Aug 28 00:00:00 BRT 1982\",\"items\":[]}";
+		String expectedResult = "{\"client\":{\"name\":\"guilherme silveira\"},\"price\":15.0,\"comments\":\"pack it nicely, please\",\"date\":\"Sat Aug 28 00:00:00 BRT 1982\",\"items\":[]}";
 		expectedResult += "," + expectedResult;
 		expectedResult = "[" + expectedResult + "]";
 

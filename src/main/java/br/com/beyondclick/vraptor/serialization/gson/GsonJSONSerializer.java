@@ -64,7 +64,7 @@ public class GsonJSONSerializer implements SerializerBuilder {
 	}
 
 	protected Gson getGson() {
-		final GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls()
+		final GsonBuilder gsonBuilder = new GsonBuilder()
 								.registerTypeAdapter(Date.class, new DateSerializer())
 								.registerTypeAdapter(java.sql.Date.class, new SqlDateSerializer())
 								.setExclusionStrategies(new CustomExclusionStrategy(fieldsToExclude));
