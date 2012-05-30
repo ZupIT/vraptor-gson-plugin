@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>br.com.caelum.vraptor-contrib</groupId>
   <artifactId>vraptor-gson-plugin</artifactId>
-  <version>0.2.0</version>
-  <description>Serialization alternative do XStream, using Gson</description>
+  <version>0.2.1</version>
+  <description>Alternative JSON serialization for VRaptor, using Gson instead of XStream</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
