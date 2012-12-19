@@ -2,9 +2,10 @@ package br.com.beyondclick.vraptor.serialization.gson;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collection;
 import java.util.Set;
 
 import br.com.beyondclick.vraptor.serialization.gson.exclusion.CustomExclusionStrategy;
@@ -15,9 +16,6 @@ import br.com.caelum.vraptor.view.ResultException;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 /**
@@ -31,10 +29,12 @@ public class GsonJSONSerializer implements SerializerBuilder {
 	private Object root;
 	private Set<String> fieldsToExclude = Sets.newHashSet();
 	private boolean indented = false;
+	private final Collection<JsonSerializer<?>> serializers;
 
-	public GsonJSONSerializer(final Writer writer, boolean indented) {
+	public GsonJSONSerializer(final Writer writer, boolean indented, Collection<JsonSerializer<?>> serializers) {
 		this.writer = writer;
 		this.indented = indented;
+		this.serializers = serializers;
 	}
 
 	public Serializer exclude(String... names) {
@@ -65,23 +65,25 @@ public class GsonJSONSerializer implements SerializerBuilder {
 
 	protected Gson getGson() {
 		final GsonBuilder gsonBuilder = new GsonBuilder()
-								.registerTypeAdapter(Date.class, new DateSerializer())
-								.registerTypeAdapter(java.sql.Date.class, new SqlDateSerializer())
 								.setExclusionStrategies(new CustomExclusionStrategy(fieldsToExclude));
+		registerTypeAdapter(gsonBuilder);
 		if( indented ) gsonBuilder.setPrettyPrinting();
 		return gsonBuilder.create();
 	}
 	
-	private class DateSerializer implements JsonSerializer<Date> {
-	  public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-	    return new JsonPrimitive(src.toString());
-	  }
-	}
-
-	private class SqlDateSerializer implements JsonSerializer<java.sql.Date> {
-		public JsonElement serialize(java.sql.Date src, Type typeOfSrc, JsonSerializationContext context) {
-			return new JsonPrimitive(new Date(src.getTime()).toString());
+	private void registerTypeAdapter(GsonBuilder gsonBuilder) {
+		if(serializers != null) {
+			for (JsonSerializer<?> adapter : serializers) {
+				gsonBuilder.registerTypeHierarchyAdapter(getAdapterType(adapter), adapter);
+			}		
 		}
+	}
+	
+	private Class<?> getAdapterType(JsonSerializer<?> adapter) {
+		Type[] genericInterfaces = adapter.getClass().getGenericInterfaces();
+		ParameterizedType type = (ParameterizedType) genericInterfaces[0];
+		Type actualType = type.getActualTypeArguments()[0];
+		return (Class<?>) actualType;
 	}
 
 	protected Writer getWriter() {

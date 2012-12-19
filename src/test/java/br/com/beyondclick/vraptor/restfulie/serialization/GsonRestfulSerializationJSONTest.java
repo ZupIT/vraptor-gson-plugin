@@ -35,7 +35,7 @@ public class GsonRestfulSerializationJSONTest {
 
 	@Test
 	public void shouldReturnAnSerializerInstanceWithSupportToLinkConvertersBasedOnReflection() {
-		GsonRestfulSerializationJSON serialization = new GsonRestfulSerializationJSON(response, null, null);
+		GsonRestfulSerializationJSON serialization = new GsonRestfulSerializationJSON(response, null, null, null);
 		Serializer serializer = serialization.getSerializer(null);
 		assertThat(serializer.getClass(), is(typeCompatibleWith(HypermediaResourceGsonJSONSerializer.class)));
 	}

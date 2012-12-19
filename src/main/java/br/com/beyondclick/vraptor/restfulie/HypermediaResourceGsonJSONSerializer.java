@@ -2,7 +2,10 @@ package br.com.beyondclick.vraptor.restfulie;
 
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import com.google.gson.JsonSerializer;
 
 import br.com.beyondclick.vraptor.serialization.gson.GsonJSONSerializer;
 import br.com.caelum.vraptor.config.Configuration;
@@ -16,8 +19,8 @@ public class HypermediaResourceGsonJSONSerializer extends GsonJSONSerializer {
 	private final Restfulie restfulie;
 	private final Configuration config;
 
-	public HypermediaResourceGsonJSONSerializer(Writer writer, Restfulie restfulie, Configuration config, boolean indented) {
-		super(writer, indented);
+	public HypermediaResourceGsonJSONSerializer(Writer writer, Restfulie restfulie, Configuration config, boolean indented, Collection<JsonSerializer<?>> serializers) {
+		super(writer, indented, serializers);
 		this.restfulie = restfulie;
 		this.config = config;
 	}

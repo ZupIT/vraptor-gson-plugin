@@ -2,9 +2,11 @@ package br.com.beyondclick.vraptor.serialization.gson;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.JsonSerializer;
 import br.com.caelum.vraptor.serialization.JSONSerialization;
 import br.com.caelum.vraptor.serialization.NoRootSerialization;
 import br.com.caelum.vraptor.serialization.Serializer;
@@ -25,8 +27,11 @@ import br.com.caelum.vraptor.view.ResultException;
 public class GsonJSONSerialization implements JSONSerialization {
 
 	private final HttpServletResponse response;
-	public GsonJSONSerialization(HttpServletResponse response) {
+	protected final Collection<JsonSerializer<?>> serializers;
+	
+	public GsonJSONSerialization(HttpServletResponse response, Collection<JsonSerializer<?>> serializers) {
 		this.response = response;
+		this.serializers = serializers;
 	}
 
 	public boolean accepts(String format) {
@@ -47,7 +52,7 @@ public class GsonJSONSerialization implements JSONSerialization {
 	}
 
 	public SerializerBuilder getSerializer(Writer writer) {
-            return new GsonJSONSerializer(writer, indented);
+            return new GsonJSONSerializer(writer, indented, serializers);
     }
 
 	public <T> NoRootSerialization withoutRoot() {

@@ -22,6 +22,11 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.beyondclick.vraptor.serialization.gson.adaptors.DateSerializer;
+import br.com.beyondclick.vraptor.serialization.gson.adaptors.SqlDateSerializer;
+
+import com.google.gson.JsonSerializer;
+
 public class GsonJSONSerializationTest {
 	private GsonJSONSerialization serialization;
 	private ByteArrayOutputStream stream;
@@ -36,8 +41,12 @@ public class GsonJSONSerializationTest {
 		HttpServletResponse response = mock(HttpServletResponse.class);
 		writer = new PrintWriter(stream, true);
 		when(response.getWriter()).thenReturn(writer);
+		List<JsonSerializer<?>> adaptors = new ArrayList<JsonSerializer<?>>();
+		adaptors.add(new DateSerializer());
+		adaptors.add(new SqlDateSerializer());
+		
 
-		this.serialization = new GsonJSONSerialization(response);
+		this.serialization = new GsonJSONSerialization(response, adaptors);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1982, 7, 28, 0, 0, 0);

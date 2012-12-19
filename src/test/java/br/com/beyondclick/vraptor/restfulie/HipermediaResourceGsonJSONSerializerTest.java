@@ -76,7 +76,7 @@ public class HipermediaResourceGsonJSONSerializerTest {
 
 		stream = new ByteArrayOutputStream();
 		writer = new PrintWriter(stream, true);
-		gson = new HypermediaResourceGsonJSONSerializer(writer, restfulie, config, false);
+		gson = new HypermediaResourceGsonJSONSerializer(writer, restfulie, config, false, null);
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(1982, 7, 28, 0, 0, 0);
